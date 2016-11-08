@@ -14,13 +14,14 @@ module Lita
             help: {'election AB' => 'Display the current election results in Alabama.'}
 
       def election(response)
-        Lita.logger.debug 'get_source started'
+        Lita.logger.debug 'Getting election data'
         results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
 
         results['candidates'].each do |candidate|
           candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
           candidate_str += "#{candidate['pctDecimal']}%"
           candidate_str += " WINNER! #{candidate['evotes']} electoral votes." if candidate['winner']
+          Lita.logger.debug "Replying with #{candidate_str}"
           response.reply candidate_str
         end
       end
@@ -33,11 +34,14 @@ module Lita
 
         results['races'].each do |race|
           if race['state'].downcase == state.downcase
-            response.reply "#{state}, #{race['evotes']} electoral votes, #{race['pctsrep']}% reporting"
+            state_reply = "#{state}, #{race['evotes']} electoral votes, #{race['pctsrep']}% reporting"
+            response.reply state_reply
+            Lita.logger.debug "Replying with #{state_reply}"
             race['candidates'].each do |candidate|
               candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
               candidate_str += "#{candidate['pctDecimal']}%"
               candidate_str += " WINNER! #{candidate['evotes']} electoral votes." if candidate['winner']
+              Lita.logger.debug "Replying with #{candidate_str}"
               response.reply candidate_str
             end
           end
@@ -103,8 +107,10 @@ module Lita
 
         search_state = gimme.upcase
         if search_state.length == 2
+          Lita.logger.debug "Returning #{states[search_state.upcase]} for #{search_state}"
           states[search_state.upcase]
         else
+          Lita.logger.debug "Returning #{search_state}"
           search_state
         end
       end
