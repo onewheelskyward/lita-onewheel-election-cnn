@@ -33,8 +33,9 @@ module Lita
 
         results['races'].each do |race|
           if race['state'].downcase == state.downcase
+            response.reply "#{state}, #{race['evotes']} electoral votes, #{race['pctsrep']}% reporting"
             race['candidates'].each do |candidate|
-              candidate_str = "#{state} (#{race['evotes']} electoral votes) - #{candidate['fname']} #{candidate['lname']}: "
+              candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
               candidate_str += "#{candidate['pctDecimal']}%"
               candidate_str += " WINNER! #{candidate['evotes']} electoral votes." if candidate['winner']
               response.reply candidate_str
