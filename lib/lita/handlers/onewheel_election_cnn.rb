@@ -20,7 +20,7 @@ module Lita
         results['candidates'].each do |candidate|
           candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
           candidate_str += "WINNER! " if candidate['winner']
-          candidate_str += "#{candidate['pctDecimal']}%, (#{candidate['votes']})"
+          candidate_str += "#{candidate['pctDecimal']}%, #{candidate['evotes']} electoral votes."
           response.reply candidate_str
         end
       end
@@ -36,7 +36,7 @@ module Lita
             race['candidates'].each do |candidate|
               candidate_str = "#{state} - #{candidate['fname']} #{candidate['lname']}: "
               candidate_str += "WINNER! " if candidate['winner']
-              candidate_str += "#{candidate['pctDecimal']}%, (#{candidate['votes']})"
+              candidate_str += "#{candidate['pctDecimal']}%, #{candidate['evotes']} electoral votes."
               response.reply candidate_str
             end
           end
