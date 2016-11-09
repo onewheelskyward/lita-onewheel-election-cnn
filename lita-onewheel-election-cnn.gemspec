@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = 'lita-onewheel-election-cnn'
-  spec.version       = '4.0.0'
+  spec.version       = '4.0.1'
   spec.authors       = ['Andrew Kreps']
   spec.email         = ['andrew.kreps@gmail.com']
   spec.description   = %q{Lita interface to CNN's 2016 Presidential Election JSON.}
