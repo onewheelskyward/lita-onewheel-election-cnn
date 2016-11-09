@@ -11,46 +11,46 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
-    expect(replies[0]).to eq("United States 2016 Presidential Election, 1% reporting.")
-    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
+    expect(replies[0]).to eq("\x0300United States 2016 Presidential Election, 1% reporting.")
+    expect(replies[1]).to eq("\x0300Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
   end
 
   it 'shows a winner' do
     mock = File.open('spec/fixtures/winner.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
-    expect(replies[0]).to eq("United States 2016 Presidential Election, 1% reporting.")
-    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
+    expect(replies[0]).to eq("\x0300United States 2016 Presidential Election, 1% reporting.")
+    expect(replies[1]).to eq("\x0300Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
   end
 
   it 'shows by state' do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election va'
-    expect(replies[0]).to eq("Virginia, 13 electoral votes, 0% reporting")
-    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
+    expect(replies[0]).to eq("\x0300Virginia, 13 electoral votes, 0% reporting")
+    expect(replies[1]).to eq("\x0300Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
   end
 
   it 'shows by STATE' do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election VA'
-    expect(replies[0]).to eq("Virginia, 13 electoral votes, 0% reporting")
-    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
+    expect(replies[0]).to eq("\x0300Virginia, 13 electoral votes, 0% reporting")
+    expect(replies[1]).to eq("\x0300Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
   end
 
   it 'shows by full state name downcase' do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election new york'
-    expect(replies[0]).to eq("NEW YORK, 29 electoral votes, 0% reporting")
-    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
+    expect(replies[0]).to eq("\x0300NEW YORK, 29 electoral votes, 0% reporting")
+    expect(replies[1]).to eq("\x0300Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304\u000300| Trump 0.0% 0")
   end
 
   it 'ansis' do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'ansielection'
-    expect(replies.last).to eq("Clinton 0 |\u000312\u000300----------------------------👽-------------------------\u000304█\u000300| Trump 19")
+    expect(replies.last).to eq("\x0300Clinton 0 |\u000312\u000300----------------------------👽-------------------------\u000304█\u000300| Trump 19")
   end
 end

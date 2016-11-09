@@ -30,7 +30,7 @@ module Lita
         Lita.logger.debug 'Getting election data'
         results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
 
-        response.reply "United States 2016 Presidential Election, #{results['races'][0]['pctsrep']}% reporting."
+        response.reply "\x0300United States 2016 Presidential Election, #{results['races'][0]['pctsrep']}% reporting."
         votes = {'blue' => {}, 'red' => {}}
         results['candidates'].each do |candidate|
           if candidate['lname'] == 'Clinton'
@@ -49,7 +49,7 @@ module Lita
         end
 
         blueredstr = get_blueredstr(votes)
-        response.reply "Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+        response.reply "\x0300Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
       end
 
       def get_blueredstr(votes)
@@ -74,7 +74,7 @@ module Lita
 
         results['races'].each do |race|
           if race['state'].downcase == state.downcase
-            state_reply = "#{state}, #{race['evotes']} electoral votes, #{race['pctsrep']}% reporting"
+            state_reply = "\x0300#{state}, #{race['evotes']} electoral votes, #{race['pctsrep']}% reporting"
             response.reply state_reply
             Lita.logger.debug "Replying with #{state_reply}"
             race['candidates'].each do |candidate|
@@ -94,7 +94,7 @@ module Lita
             end
 
             blueredstr = get_blueredstr(votes)
-            response.reply "Clinton #{(votes['blue']['winner'] == true)? ' WINNER! ' : '' }#{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+            response.reply "\x0300Clinton #{(votes['blue']['winner'] == true)? ' WINNER! ' : '' }#{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
           end
         end
       end
@@ -191,7 +191,7 @@ module Lita
 
         reply.insert((reply.length / 2) + 3, "👽")
 
-        reply = "Clinton #{blues} |" + reply + "\x0300| Trump #{reds}"
+        reply = "\x0300Clinton #{blues} |" + reply + "\x0300| Trump #{reds}"
 
         response.reply reply
       end
