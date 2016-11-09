@@ -33,7 +33,7 @@ module Lita
         response.reply "United States 2016 Presidential Election, #{results['races'][0]['pctsrep']}% reporting."
         results['candidates'].each do |candidate|
           candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
-          candidate_str += "#{candidate['pctDecimal']}%, #{candidate['evotes']} electoral votes."
+          candidate_str += "#{candidate['pctDecimal']}%, #{candidate['cvotes']} popular votes, #{candidate['evotes']} electoral votes."
           candidate_str += "  WINNER!  " if candidate['winner']
           Lita.logger.debug "Replying with #{candidate_str}"
           response.reply candidate_str
@@ -53,7 +53,7 @@ module Lita
             Lita.logger.debug "Replying with #{state_reply}"
             race['candidates'].each do |candidate|
               candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
-              candidate_str += "#{candidate['pctDecimal']}%"
+              candidate_str += "#{candidate['pctDecimal']}%, #{candidate['cvotes']} popular votes"
               candidate_str += " WINNER! #{candidate['evotes']} electoral votes." if candidate['winner']
               Lita.logger.debug "Replying with #{candidate_str}"
               response.reply candidate_str

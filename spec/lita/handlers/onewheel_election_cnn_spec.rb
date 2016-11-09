@@ -12,8 +12,8 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
     expect(replies[0]).to eq("United States 2016 Presidential Election, 1% reporting.")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 electoral votes.")
-    expect(replies[2]).to eq("Donald Trump: 0.0%, 19 electoral votes.")
+    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes, 0 electoral votes.")
+    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes, 19 electoral votes.")
   end
 
   it 'shows a winner' do
@@ -21,8 +21,8 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
     expect(replies[0]).to eq("United States 2016 Presidential Election, 1% reporting.")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 electoral votes.  WINNER!  ")
-    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 electoral votes.")
+    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes, 0 electoral votes.  WINNER!  ")
+    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes, 0 electoral votes.")
   end
 
   it 'shows by state' do
@@ -30,8 +30,8 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election va'
     expect(replies[0]).to eq("Virginia, 13 electoral votes, 0% reporting")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%")
-    expect(replies[2]).to eq("Donald Trump: 0.0%")
+    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes")
+    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes")
   end
 
   it 'shows by STATE' do
@@ -39,8 +39,8 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election VA'
     expect(replies[0]).to eq("Virginia, 13 electoral votes, 0% reporting")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%")
-    expect(replies[2]).to eq("Donald Trump: 0.0%")
+    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes")
+    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes")
   end
 
   it 'shows by full state name downcase' do
@@ -48,8 +48,8 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election new york'
     expect(replies[0]).to eq("NEW YORK, 29 electoral votes, 0% reporting")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%")
-    expect(replies[2]).to eq("Donald Trump: 0.0%")
+    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes")
+    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes")
   end
 
   it 'ansis' do
