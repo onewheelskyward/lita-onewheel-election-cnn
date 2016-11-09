@@ -5,6 +5,7 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
   it { is_expected.to route_command('e') }
   it { is_expected.to route_command('election ny') }
   it { is_expected.to route_command('e ny') }
+  it { is_expected.to route_command('ansielection') }
 
   it 'shows the current election results' do
     mock = File.open('spec/fixtures/election.json').read
@@ -49,5 +50,10 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     expect(replies[0]).to eq("NEW YORK, 29 electoral votes, 0% reporting")
     expect(replies[1]).to eq("Hillary Clinton: 0.0%")
     expect(replies[2]).to eq("Donald Trump: 0.0%")
+  end
+
+  it 'ansis' do
+    send_command 'ansielection'
+    expect(replies.last).to eq('bbbbbbbbbbbb--------------------------rrrrrrrrrrrrrrrr')
   end
 end
