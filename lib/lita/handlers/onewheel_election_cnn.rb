@@ -71,7 +71,7 @@ module Lita
                         "CA" => "California",
                         "CO" => "Colorado",
                         "CT" => "Connecticut",
-                        "DC" => "District of Columbia",
+                        "DC" => "Dist. of Columbia",
                         "DE" => "Delaware",
                         "FL" => "Florida",
                         "GA" => "Georgia",
