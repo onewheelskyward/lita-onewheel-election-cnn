@@ -143,7 +143,7 @@ module Lita
           end
         end
 
-        reply = "Clinton #{blues} |"
+        reply = ''
         extras = 54 - (blues / 10) - (reds / 10)
         reply += "\x0312"
         (blues / 10).times { reply += '█' }
@@ -151,9 +151,11 @@ module Lita
         extras.times { reply += '-'}
         reply += "\x0304"
         (reds / 10).times { reply += '█' }
-        reply += "\x0300| Trump #{reds}"
 
         reply.insert(reply.length / 2, "👽")
+
+        reply = "Clinton #{blues} |" + reply + "\x0300| Trump #{reds}"
+
         response.reply reply
       end
 
