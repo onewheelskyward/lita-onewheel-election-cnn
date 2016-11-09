@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
   it { is_expected.to route_command('election') }
+  it { is_expected.to route_command('e') }
+  it { is_expected.to route_command('election ny') }
+  it { is_expected.to route_command('e ny') }
 
   it 'shows the current election results' do
     mock = File.open('spec/fixtures/election.json').read

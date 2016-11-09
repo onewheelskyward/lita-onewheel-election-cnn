@@ -8,10 +8,18 @@ module Lita
             command: true,
             help: {'election' => 'Display the current election results.'}
 
+      route /^e$/i,
+            :election,
+            command: true
+
       route /^e[rl]ection\s+(.*)$/i,
             :election_by_state,
             command: true,
             help: {'election AB' => 'Display the current election results in Alabama.'}
+
+      route /^e\s+(.*)$/i,
+            :election_by_state,
+            command: true
 
       def election(response)
         Lita.logger.debug 'Getting election data'
