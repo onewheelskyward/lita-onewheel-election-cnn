@@ -48,6 +48,11 @@ module Lita
           end
         end
 
+        blueredstr = get_blueredstr(votes)
+        response.reply "Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+      end
+
+      def get_blueredstr(votes)
         bluecount = (votes['blue']['percentage'].to_f / 2).to_i
         redcount = (votes['red']['percentage'].to_f / 2).to_i
 
@@ -57,7 +62,7 @@ module Lita
         (50 - bluecount - redcount).times { blueredstr += '-' }
         blueredstr += "\x0304"
         redcount.times { blueredstr += '█' }
-        response.reply "Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+        blueredstr
       end
 
       def election_by_state(response)
@@ -65,6 +70,7 @@ module Lita
         results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
 
         state = stateness(response.matches[0][0])
+        votes = {'blue' => {}, 'red' => {}}
 
         results['races'].each do |race|
           if race['state'].downcase == state.downcase
@@ -72,12 +78,23 @@ module Lita
             response.reply state_reply
             Lita.logger.debug "Replying with #{state_reply}"
             race['candidates'].each do |candidate|
-              candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
-              candidate_str += "#{candidate['pctDecimal']}%, #{candidate['cvotes']} popular votes"
-              candidate_str += " WINNER! #{candidate['evotes']} electoral votes." if candidate['winner']
-              Lita.logger.debug "Replying with #{candidate_str}"
-              response.reply candidate_str
+              if candidate['lname'] == 'Clinton'
+                votes['blue']['percentage'] = candidate['pctDecimal']
+                votes['blue']['popular']    = candidate['cvotes']
+                votes['blue']['electoral']  = candidate['evotes']
+                votes['blue']['winner']     = candidate['winner']
+              end
+
+              if candidate['lname'] == 'Trump'
+                votes['red']['percentage'] = candidate['pctDecimal']
+                votes['red']['popular']    = candidate['cvotes']
+                votes['red']['electoral']  = candidate['evotes']
+                votes['red']['winner']     = candidate['winner']
+              end
             end
+
+            blueredstr = get_blueredstr(votes)
+            response.reply "Clinton #{(votes['blue']['winner'] == true)? ' WINNER! ' : '' }#{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
           end
         end
       end
