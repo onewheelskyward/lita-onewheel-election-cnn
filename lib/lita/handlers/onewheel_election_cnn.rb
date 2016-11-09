@@ -57,7 +57,7 @@ module Lita
         (50 - bluecount - redcount).times { blueredstr += '-' }
         blueredstr += "\x0304"
         redcount.times { blueredstr += '█' }
-        response.reply "Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['blue']['percentage']}% #{votes['blue']['popular']}"
+        response.reply "Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
       end
 
       def election_by_state(response)
