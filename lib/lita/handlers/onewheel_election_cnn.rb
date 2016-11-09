@@ -145,12 +145,12 @@ module Lita
 
         reply = ''
         extras = 54 - blues - reds
-        reply += '\x0304'
-        blues.times { reply += '-' }
-        reply += '\x0300'
+        reply += "\x0304"
+        blues.times { reply += '█' }
+        reply += "\x0300"
         extras.times { reply += '-'}
-        reply += '\x0302'
-        reds.times { reply += '-' }
+        reply += "\x0302"
+        reds.times { reply += '█' }
 
         response.reply reply
       end
