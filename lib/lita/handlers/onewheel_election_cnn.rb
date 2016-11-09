@@ -25,6 +25,7 @@ module Lita
         Lita.logger.debug 'Getting election data'
         results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
 
+        response.reply "United States 2016 Presidential Election, #{results['races'][0]['pctsrep']}% reporting."
         results['candidates'].each do |candidate|
           candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
           candidate_str += "#{candidate['pctDecimal']}%, #{candidate['evotes']} electoral votes."
