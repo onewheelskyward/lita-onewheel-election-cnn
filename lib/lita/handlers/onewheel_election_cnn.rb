@@ -28,38 +28,15 @@ module Lita
         response.reply "\x0300United States 2016 Presidential Election, #{results['races'][0]['pctsrep']}% reporting."
         votes = {'blue' => {}, 'red' => {}}
         results['candidates'].each do |candidate|
-          if candidate['lname'] == 'Clinton'
-            votes['blue']['percentage'] = candidate['pctDecimal']
-            votes['blue']['popular']    = candidate['cvotes']
-            votes['blue']['electoral']  = candidate['evotes']
-            votes['blue']['winner']     = candidate['winner']
-          end
-
-          if candidate['lname'] == 'Trump'
-            votes['red']['percentage'] = candidate['pctDecimal']
-            votes['red']['popular']    = candidate['cvotes']
-            votes['red']['electoral']  = candidate['evotes']
-            votes['red']['winner']     = candidate['winner']
-          end
+          votes = get_reds_and_blues(candidate, votes)
         end
 
         blueredstr = get_blueredstr(votes)
-        response.reply "\x0300Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+        reply = "\x0300Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+        Lita.logger.debug reply
+        response.reply reply
 
         ansielection(response, results)
-      end
-
-      def get_blueredstr(votes)
-        bluecount = (votes['blue']['percentage'].to_f / 2).to_i
-        redcount = (votes['red']['percentage'].to_f / 2).to_i
-
-        blueredstr = "\x0312"
-        bluecount.times { blueredstr += '█' }
-        blueredstr += "\x0300"
-        (50 - bluecount - redcount).times { blueredstr += '-' }
-        blueredstr += "\x0304"
-        redcount.times { blueredstr += '█' }
-        blueredstr
       end
 
       def election_by_state(response)
@@ -75,25 +52,75 @@ module Lita
             response.reply state_reply
             Lita.logger.debug "Replying with #{state_reply}"
             race['candidates'].each do |candidate|
-              if candidate['lname'] == 'Clinton'
-                votes['blue']['percentage'] = candidate['pctDecimal']
-                votes['blue']['popular']    = candidate['cvotes']
-                votes['blue']['electoral']  = candidate['evotes']
-                votes['blue']['winner']     = candidate['winner']
-              end
-
-              if candidate['lname'] == 'Trump'
-                votes['red']['percentage'] = candidate['pctDecimal']
-                votes['red']['popular']    = candidate['cvotes']
-                votes['red']['electoral']  = candidate['evotes']
-                votes['red']['winner']     = candidate['winner']
-              end
+              votes = get_reds_and_blues(candidate, votes)
             end
 
             blueredstr = get_blueredstr(votes)
-            response.reply "\x0300Clinton #{(votes['blue']['winner'] == true)? ' WINNER! ' : '' }#{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+            reply = "\x0300Clinton #{(votes['blue']['winner'] == true) ? ' WINNER! ' : '' }#{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+            Lita.logger.debug reply
+            response.reply reply
           end
         end
+      end
+
+      def ansielection(response, results)
+        reds = 0
+        blues = 0
+        results['candidates'].each do |candidate|
+          if candidate['lname'] == 'Clinton'
+            blues = candidate['evotes']
+          end
+          if candidate['lname'] == 'Trump'
+            reds = candidate['evotes']
+          end
+        end
+
+        reply = ''
+        extras = 54 - (blues / 10) - (reds / 10)
+        reply += "\x0312"
+        (blues / 10).times { reply += '█' }
+        reply += "\x0300"
+        extras.times { reply += '-'}
+        reply += "\x0304"
+        (reds / 10).times { reply += '█' }
+
+        reply.insert((reply.length / 2) + 3, "👽")
+
+        reply = "\x0300Clinton #{blues} |" + reply + "\x0300| Trump #{reds}"
+
+        Lita.logger.debug reply
+        response.reply reply
+      end
+
+      def get_reds_and_blues(candidate, votes)
+        if candidate['lname'] == 'Clinton'
+          votes['blue']['percentage'] = candidate['pctDecimal']
+          votes['blue']['popular'] = candidate['cvotes']
+          votes['blue']['electoral'] = candidate['evotes']
+          votes['blue']['winner'] = candidate['winner']
+        end
+
+        if candidate['lname'] == 'Trump'
+          votes['red']['percentage'] = candidate['pctDecimal']
+          votes['red']['popular'] = candidate['cvotes']
+          votes['red']['electoral'] = candidate['evotes']
+          votes['red']['winner'] = candidate['winner']
+        end
+
+        votes
+      end
+
+      def get_blueredstr(votes)
+        bluecount = (votes['blue']['percentage'].to_f / 2).to_i
+        redcount = (votes['red']['percentage'].to_f / 2).to_i
+
+        blueredstr = "\x0312"
+        bluecount.times { blueredstr += '█' }
+        blueredstr += "\x0300"
+        (50 - bluecount - redcount).times { blueredstr += '-' }
+        blueredstr += "\x0304"
+        redcount.times { blueredstr += '█' }
+        blueredstr
       end
 
       def stateness(gimme)
@@ -161,34 +188,6 @@ module Lita
           Lita.logger.debug "Returning #{search_state}"
           search_state
         end
-      end
-
-      def ansielection(response, results)
-        reds = 0
-        blues = 0
-        results['candidates'].each do |candidate|
-          if candidate['lname'] == 'Clinton'
-            blues = candidate['evotes']
-          end
-          if candidate['lname'] == 'Trump'
-            reds = candidate['evotes']
-          end
-        end
-
-        reply = ''
-        extras = 54 - (blues / 10) - (reds / 10)
-        reply += "\x0312"
-        (blues / 10).times { reply += '█' }
-        reply += "\x0300"
-        extras.times { reply += '-'}
-        reply += "\x0304"
-        (reds / 10).times { reply += '█' }
-
-        reply.insert((reply.length / 2) + 3, "👽")
-
-        reply = "\x0300Clinton #{blues} |" + reply + "\x0300| Trump #{reds}"
-
-        response.reply reply
       end
 
       Lita.register_handler(self)
