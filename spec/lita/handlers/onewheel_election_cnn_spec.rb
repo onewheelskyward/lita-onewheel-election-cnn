@@ -10,16 +10,16 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
-    expect(replies[0]).to eq("Hillary Clinton: 0.0%")
-    expect(replies[1]).to eq("Donald Trump: 0.0%")
+    expect(replies[0]).to eq("Hillary Clinton: 0.0%, 0 electoral votes.")
+    expect(replies[1]).to eq("Donald Trump: 0.0%, 19 electoral votes.")
   end
 
   it 'shows a winner' do
     mock = File.open('spec/fixtures/winner.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
-    expect(replies[0]).to eq("Hillary Clinton: 0.0% WINNER! 0 electoral votes.")
-    expect(replies[1]).to eq("Donald Trump: 0.0%")
+    expect(replies[0]).to eq("Hillary Clinton: 0.0%, 0 electoral votes.  WINNER!  ")
+    expect(replies[1]).to eq("Donald Trump: 0.0%, 0 electoral votes.")
   end
 
   it 'shows by state' do
