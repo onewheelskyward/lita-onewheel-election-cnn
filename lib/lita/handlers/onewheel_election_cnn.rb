@@ -151,7 +151,7 @@ module Lita
         extras.times { reply += '-'}
         reply += "\x0304"
         (reds / 10).times { reply += '█' }
-        reply += "| Trump #{reds}"
+        reply += "\x0300| Trump #{reds}"
 
         response.reply reply
       end
