@@ -145,7 +145,7 @@ module Lita
 
         reply = "Clinton #{blues} |"
         extras = 54 - (blues / 10) - (reds / 10)
-        reply += "\x0310"
+        reply += "\x0312"
         (blues / 10).times { reply += '█' }
         reply += "\x0300"
         extras.times { reply += '-'}
