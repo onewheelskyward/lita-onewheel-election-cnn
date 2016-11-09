@@ -136,21 +136,22 @@ module Lita
         blues = 0
         results['candidates'].each do |candidate|
           if candidate['lname'] == 'Clinton'
-            blues = candidate['evotes'] / 10
+            blues = candidate['evotes']
           end
           if candidate['lname'] == 'Trump'
-            reds = candidate['evotes'] / 10
+            reds = candidate['evotes']
           end
         end
 
-        reply = ''
-        extras = 54 - blues - reds
-        reply += "\x0304"
-        blues.times { reply += '█' }
+        reply = "Clinton #{blues} |"
+        extras = 54 - (blues / 10) - (reds / 10)
+        reply += "\x0302"
+        (blues / 10).times { reply += '█' }
         reply += "\x0300"
         extras.times { reply += '-'}
-        reply += "\x0302"
-        reds.times { reply += '█' }
+        reply += "\x0304"
+        (reds / 10).times { reply += '█' }
+        reply += "| Trump #{reds}"
 
         response.reply reply
       end
