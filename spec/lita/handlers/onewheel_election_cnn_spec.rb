@@ -54,6 +54,6 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
 
   it 'ansis' do
     send_command 'ansielection'
-    expect(replies.last).to eq('bbbbbbbbbbbb--------------------------rrrrrrrrrrrrrrrr')
+    expect(replies.last).to eq("\x0304-------------\x0300-------------------------\x0302----------------")
   end
 end
