@@ -153,7 +153,7 @@ module Lita
         (reds / 10).times { reply += '█' }
         reply += "\x0300| Trump #{reds}"
 
-        reply.insert(27, "👽")
+        reply.insert(reply.length / 2, "👽")
         response.reply reply
       end
 

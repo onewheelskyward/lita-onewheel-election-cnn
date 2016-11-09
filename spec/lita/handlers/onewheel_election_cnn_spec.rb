@@ -56,6 +56,6 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     mock = File.open('spec/fixtures/election.json').read
     allow(RestClient).to receive(:get) { mock }
     send_command 'ansielection'
-    expect(replies.last).to eq("Clinton 0 |\u000312\u000300-----------------------------------------------------\u000304█\u000300| Trump 19")
+    expect(replies.last).to eq("Clinton 0 |\u000312\u000300--------------------------👽---------------------------\u000304█\u000300| Trump 19")
   end
 end
