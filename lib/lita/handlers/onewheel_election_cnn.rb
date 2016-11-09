@@ -21,11 +21,6 @@ module Lita
             :election_by_state,
             command: true
 
-      route /^ansielection$/i,
-            :ansielection,
-            command: true,
-            help: {'ansielection' => 'pretty colors'}
-
       def election(response)
         Lita.logger.debug 'Getting election data'
         results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
@@ -50,6 +45,8 @@ module Lita
 
         blueredstr = get_blueredstr(votes)
         response.reply "\x0300Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}\x0300| Trump #{votes['red']['percentage']}% #{votes['red']['popular']}"
+
+        ansielection(response, results)
       end
 
       def get_blueredstr(votes)
@@ -166,9 +163,7 @@ module Lita
         end
       end
 
-      def ansielection(response)
-        results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
-
+      def ansielection(response, results)
         reds = 0
         blues = 0
         results['candidates'].each do |candidate|
