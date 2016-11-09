@@ -31,13 +31,33 @@ module Lita
         results = JSON.parse(RestClient.get('http://data.cnn.com/ELECTION/2016/full/P.full.json'))
 
         response.reply "United States 2016 Presidential Election, #{results['races'][0]['pctsrep']}% reporting."
+        votes = {'blue' => {}, 'red' => {}}
         results['candidates'].each do |candidate|
-          candidate_str = "#{candidate['fname']} #{candidate['lname']}: "
-          candidate_str += "#{candidate['pctDecimal']}%, #{candidate['cvotes']} popular votes, #{candidate['evotes']} electoral votes."
-          candidate_str += "  WINNER!  " if candidate['winner']
-          Lita.logger.debug "Replying with #{candidate_str}"
-          response.reply candidate_str
+          if candidate['lname'] == 'Clinton'
+            votes['blue']['percentage'] = candidate['pctDecimal']
+            votes['blue']['popular']    = candidate['cvotes']
+            votes['blue']['electoral']  = candidate['evotes']
+            votes['blue']['winner']     = candidate['winner']
+          end
+
+          if candidate['lname'] == 'Trump'
+            votes['red']['percentage'] = candidate['pctDecimal']
+            votes['red']['popular']    = candidate['cvotes']
+            votes['red']['electoral']  = candidate['evotes']
+            votes['red']['winner']     = candidate['winner']
+          end
         end
+
+        bluecount = (votes['blue']['percentage'].to_f / 2).to_i
+        redcount = (votes['red']['percentage'].to_f / 2).to_i
+
+        blueredstr = "\x0312"
+        bluecount.times { blueredstr += '█' }
+        blueredstr += "\x0300"
+        (50 - bluecount - redcount).times { blueredstr += '-' }
+        blueredstr += "\x0304"
+        redcount.times { blueredstr += '█' }
+        response.reply "Clinton #{votes['blue']['percentage']}% #{votes['blue']['popular']} |#{blueredstr}| Trump #{votes['blue']['percentage']}% #{votes['blue']['popular']}"
       end
 
       def election_by_state(response)

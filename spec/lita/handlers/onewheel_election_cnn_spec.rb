@@ -12,8 +12,7 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
     expect(replies[0]).to eq("United States 2016 Presidential Election, 1% reporting.")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes, 0 electoral votes.")
-    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes, 19 electoral votes.")
+    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304| Trump 0.0% 0")
   end
 
   it 'shows a winner' do
@@ -21,8 +20,7 @@ describe Lita::Handlers::OnewheelElectionCnn, lita_handler: true do
     allow(RestClient).to receive(:get) { mock }
     send_command 'election'
     expect(replies[0]).to eq("United States 2016 Presidential Election, 1% reporting.")
-    expect(replies[1]).to eq("Hillary Clinton: 0.0%, 0 popular votes, 0 electoral votes.  WINNER!  ")
-    expect(replies[2]).to eq("Donald Trump: 0.0%, 0 popular votes, 0 electoral votes.")
+    expect(replies[1]).to eq("Clinton 0.0% 0 |\u000312\u000300--------------------------------------------------\u000304| Trump 0.0% 0")
   end
 
   it 'shows by state' do
